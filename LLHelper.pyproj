@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" DefaultTargets="Build">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{f0381d99-ee32-42df-b8c1-29d8b66a1ded}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>app.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{789894c7-04a9-4a11-a6b5-3f4435165112};{1b580a1a-fdb3-4b32-83e1-6407eb2722e6};{349c5851-65df-11da-9384-00065b846f21};{888888a0-9f3d-457c-b088-3a5042f75d52}</ProjectTypeGuids>
+    <LaunchProvider>Web launcher</LaunchProvider>
+    <InterpreterId>Global|PythonCore|2.7-32</InterpreterId>
+    <WebBrowserUrl>http://localhost</WebBrowserUrl>
+    <PythonWsgiHandler>{StartupModule}.wsgi_app</PythonWsgiHandler>
+    <UseIISExpress>true</UseIISExpress>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="favicon.ico" />
+    <Content Include="legacy\favicon.ico" />
+    <Content Include="legacy\newcardsjson.txt" />
+    <Content Include="legacy\newsongsjson.txt" />
+    <Content Include="legacy\README.md" />
+    <Content Include="legacy\requirements.txt" />
+    <Content Include="legacy\static\example.jpg" />
+    <Content Include="legacy\static\iosicon.png" />
+    <Content Include="legacy\static\js\changespeeds.js" />
+    <Content Include="legacy\static\js\CoverageCalculator.js" />
+    <Content Include="legacy\static\js\highcharts\exporting.js" />
+    <Content Include="legacy\static\js\highcharts\highcharts.js" />
+    <Content Include="legacy\static\js\highcharts\highstock.js" />
+    <Content Include="legacy\static\js\highcharts\jquery-1.8.3.min.js" />
+    <Content Include="legacy\static\llcardapi.js" />
+    <Content Include="legacy\static\llnewunit\storage.js" />
+    <Content Include="legacy\static\llsongapi.js" />
+    <Content Include="legacy\static\null.png" />
+    <Content Include="legacy\static\shortcuticon.png" />
+    <Content Include="legacy\static\twintailosu.css" />
+    <Content Include="legacy\static\twintailosu.js" />
+    <Content Include="legacy\static\twintailtime.js" />
+    <Content Include="legacy\templates\about.html" />
+    <Content Include="legacy\templates\activitypt.html" />
+    <Content Include="legacy\templates\cfpt.html" />
+    <Content Include="legacy\templates\footer.html" />
+    <Content Include="legacy\templates\llactivity.html" />
+    <Content Include="legacy\templates\llcardmodify.html" />
+    <Content Include="legacy\templates\llchallengefestival.html" />
+    <Content Include="legacy\templates\llcoverage.html" />
+    <Content Include="legacy\templates\lllvlup.html" />
+    <Content Include="legacy\templates\llmedleyfestival.html" />
+    <Content Include="legacy\templates\llnakayoshi.html" />
+    <Content Include="legacy\templates\llnewautounit.html" />
+    <Content Include="legacy\templates\llnewcarddata.html" />
+    <Content Include="legacy\templates\llnewsongmodify.html" />
+    <Content Include="legacy\templates\llnewunit.html" />
+    <Content Include="legacy\templates\llnewunitsis.html" />
+    <Content Include="legacy\templates\llrally.html" />
+    <Content Include="legacy\templates\llscorematch.html" />
+    <Content Include="legacy\templates\llsongdata.html" />
+    <Content Include="legacy\templates\llsongmodify.html" />
+    <Content Include="legacy\templates\llunit.html" />
+    <Content Include="legacy\templates\llunitimport.html" />
+    <Content Include="legacy\templates\llurcardrank.html" />
+    <Content Include="legacy\templates\llurrank.html" />
+    <Content Include="legacy\templates\mainpage.html" />
+    <Content Include="legacy\templates\mfpt.html" />
+    <Content Include="legacy\templates\nmpt.html" />
+    <Content Include="legacy\templates\smmulti.html" />
+    <Content Include="newcardsjson.txt" />
+    <Content Include="newsongsjson.txt" />
+    <Content Include="README.md" />
+    <Content Include="requirements.txt" />
+    <Content Include="static\example.jpg" />
+    <Content Include="static\han.min.css" />
+    <Content Include="static\han.min.js" />
+    <Content Include="static\iosicon.png" />
+    <Content Include="static\js\changespeeds.js" />
+    <Content Include="static\js\CoverageCalculator.js" />
+    <Content Include="static\js\highcharts\exporting.js" />
+    <Content Include="static\js\highcharts\highcharts.js" />
+    <Content Include="static\js\highcharts\highstock.js" />
+    <Content Include="static\js\highcharts\jquery-1.8.3.min.js" />
+    <Content Include="static\llcardapi.js" />
+    <Content Include="static\llnewunit\storage.js" />
+    <Content Include="static\llsong.js" />
+    <Content Include="static\llsongapi.js" />
+    <Content Include="static\masonry.pkgd.min.js" />
+    <Content Include="static\null.png" />
+    <Content Include="static\shortcuticon.png" />
+    <Content Include="static\twintailosu.css" />
+    <Content Include="static\twintailosu.js" />
+    <Content Include="static\twintailtime.js" />
+    <Content Include="static\vue.min.js" />
+    <Content Include="templates\about.html" />
+    <Content Include="templates\activitypt.html" />
+    <Content Include="templates\cfpt.html" />
+    <Content Include="templates\components\event-calc-button.html" />
+    <Content Include="templates\components\event-calc-result.html" />
+    <Content Include="templates\components\event-current.html" />
+    <Content Include="templates\components\event-points.html" />
+    <Content Include="templates\components\event-time.html" />
+    <Content Include="templates\components\unit-selector-neo.html" />
+    <Content Include="templates\components\unit-selector.html" />
+    <Content Include="templates\footer.html" />
+    <Content Include="templates\layout.html" />
+    <Content Include="templates\llactivity.html" />
+    <Content Include="templates\llcardmodify.html" />
+    <Content Include="templates\llchallengefestival.html" />
+    <Content Include="templates\llcoverage.html" />
+    <Content Include="templates\lllvlup.html" />
+    <Content Include="templates\llmedleyfestival.html" />
+    <Content Include="templates\llnakayoshi.html" />
+    <Content Include="templates\llnewautounit.html" />
+    <Content Include="templates\llnewcarddata.html" />
+    <Content Include="templates\llnewsongmodify.html" />
+    <Content Include="templates\llnewunit.html" />
+    <Content Include="templates\llnewunitsis.html" />
+    <Content Include="templates\llrally.html" />
+    <Content Include="templates\llscorematch.html" />
+    <Content Include="templates\llsongdata.html" />
+    <Content Include="templates\llsongmodify.html" />
+    <Content Include="templates\llunit.html" />
+    <Content Include="templates\llunitimport.html" />
+    <Content Include="templates\llurcardrank.html" />
+    <Content Include="templates\llurrank.html" />
+    <Content Include="templates\mainpage.html" />
+    <Content Include="templates\mfpt.html" />
+    <Content Include="templates\nmpt.html" />
+    <Content Include="templates\smmulti.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="app.py" />
+    <Compile Include="legacy\app.py" />
+    <Compile Include="legacy\lldatamodify.py" />
+    <Compile Include="legacy\llunit.py" />
+    <Compile Include="legacy\static\fetchimage.py" />
+    <Compile Include="legacy\updatenewcard.py" />
+    <Compile Include="legacy\updatenewlive.py" />
+    <Compile Include="legacy\updateweight.py" />
+    <Compile Include="legacy_app.py" />
+    <Compile Include="legacy_llunit.py" />
+    <Compile Include="lldatamodify.py" />
+    <Compile Include="llunit.py" />
+    <Compile Include="static\fetchimage.py" />
+    <Compile Include="updatenewcard.py" />
+    <Compile Include="updatenewlive.py" />
+    <Compile Include="updateweight.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="legacy" />
+    <Folder Include="legacy\static" />
+    <Folder Include="legacy\static\js" />
+    <Folder Include="legacy\static\js\highcharts" />
+    <Folder Include="legacy\static\llnewunit" />
+    <Folder Include="legacy\templates" />
+    <Folder Include="static" />
+    <Folder Include="static\js" />
+    <Folder Include="static\js\highcharts" />
+    <Folder Include="static\llnewunit" />
+    <Folder Include="templates" />
+    <Folder Include="templates\components" />
+  </ItemGroup>
+  <ItemGroup>
+    <InterpreterReference Include="Global|PythonCore|2.7-32" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Web.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:63859/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>True</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

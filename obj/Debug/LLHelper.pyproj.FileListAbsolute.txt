@@ -1,0 +1,3 @@
+F:\Development\Git\LLHelper\obj\Debug\LLHelper.pyproj.CoreCompileInputs.cache
+F:\Development\Git\LLHelper\bin\Microsoft.PythonTools.WebRole.dll
+F:\Development\Git\LLHelper\bin\wfastcgi.py
