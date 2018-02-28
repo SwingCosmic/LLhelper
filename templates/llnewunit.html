@@ -5,22 +5,52 @@
 {% set title="队伍强度、得分计算" %}
 
 {% block additional_header %}
-   <script type="text/javascript" src="{{ url_for('static', filename='twintailosu.js') }}?v=1.01"></script>
-   <script type="text/javascript" src="{{ url_for('static', filename='llsong.js') }}"></script>
-   <link rel="shortcut icon" href="/static/shortcuticon.png" />
-   <style type="text/css">
-      img {height:65px;width:65px}
-      input[type="number"][size="3"] {
-         width: 60px;
-      }
-      input[type="number"][size="2"] {
-         width: 50px;
-      }
-      input::-webkit-inner-spin-button {
-         -webkit-appearance: none;
-         margin: 0;
-      }
+    <script type="text/javascript" src="{{ url_for('static', filename='twintailosu.js') }}?v=1.01"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='llsong.js') }}"></script>
+    <link rel="shortcut icon" href="/static/shortcuticon.png" />
+    <style type="text/css">
+       img {height:65px;width:65px}
+       input[type="number"][size="3"] {
+          width: 60px;
+       }
+       input[type="number"][size="2"] {
+          width: 50px;
+       }
+       input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+       }
+
+       /*#main-block > form  {
+           margin-left:20px;
+           margin-right:20px;
+       }
+       @media only screen and (max-width : 576px) {
+           #main-block > form {
+               width: 100%;
+               margin-left: 0;
+               margin-right: 0;
+           }
+
+       }*/
+        .row-1 > div.input-group {
+            left:15px;
+            
+        }
+        @media only screen and (min-width : 577px) and (max-width:592px) {
+            .row-1 > div.input-group {
+                width: 90%;
+            }
+        }
+        @media only screen and (max-width : 576px){
+            .row-1 > div.input-group {
+                width:85%;
+            }
+        }
+        
+        
    </style>
+    
 {% endblock %}
 
 {% block script %}
@@ -333,10 +363,13 @@
          document.getElementById(which).style.color = c;
          document.getElementById("secondbase").innerHTML = songattr;
          document.getElementById("secondbase2").innerHTML = songattr;
+        //todo vue
          selectlist = ["map", "bonus", "bonus2"];
          for (var i in selectlist){
             document.getElementById(selectlist[i]).value = songattr;
          }
+         vm.$data.attr = songattr;
+          //=====
          if (document.getElementById("percentage").value != 12)
             document.getElementById("base").value = songattr;
          if (document.getElementById("percentage2").value != 12)
@@ -1260,9 +1293,10 @@
       document.getElementById('resultmic').innerHTML = micDisplayString + ' (' + micRawValue.toLocaleString() + (micDisplayValue % 1 === 0.0 ? '' : ', 该数值对应的援力暂时未知, 欢迎反馈') + ')'
    }
 
-   function changemapcolor(){
-      document.getElementById('secondbase').innerHTML = document.getElementById('map').value
-      document.getElementById('secondbase2').innerHTML = document.getElementById('map').value
+   function changemapcolor() {
+      //改成vue了
+      //document.getElementById('secondbase').innerHTML = document.getElementById('map').value
+      //document.getElementById('secondbase2').innerHTML = document.getElementById('map').value
       document.getElementById('base2').value = document.getElementById('map').value
       document.getElementById('bonus2').value = document.getElementById('map').value
    }
@@ -1270,6 +1304,11 @@
    function callback(){
    	alert('4')
    }
+
+
+   $(function () {
+       $('[data-toggle="tooltip"]').tooltip()
+   })
    </script>
 {% endblock %}
 
@@ -1292,503 +1331,666 @@
 {% endblock %}
 
 {% block main %}
-<input type="submit" name="clear" value="清空输入" onclick="clearall()"><br>
-<form action="" id="unitform" name="unitform" method="POST" onsubmit="return check()" enctype=multipart/form-data>
-<!--<form action="/llloadunit"  onsubmit=""  target="if">-->
-<h3>歌曲信息</h3>
-搜索：<input type="text" id="songsearch" name="songsearch" value="" onchange="changesongselect()"></input><br>
-筛选：
-	<select id="songatt" name="songatt" onchange="changesongselect()">
-		<option value="">属性</option>
-		<option value="smile">smile</option>
-		<option value="pure">pure</option>
-		<option value="cool">cool</option>
-	</select>
-	<select id="songunit" name="songunit" onchange="changesongselect()">
-		<option value="">组合</option>
-		<option value="muse">μ's</option>
-		<option value="aqours">Aqours</option>
-	</select><br>
-歌曲：<select id="songchoice" name="songchoice" onchange="changediffinfo();changesongcolor('songchoice')">
-		<option value=""> </option>
-	</select>
-	<input type="button" id="language" name="language" onclick="changeLanguage()" value="切换语言"></input>
-	<br>
-   难度：<select id="diffchoice" name="diffchoice" onchange="changesongcolor('songchoice')">
-      <option value="easy">easy</option>
-      <option value="normal">normal</option>
-      <option value="hard">hard</option>
-      <option value="expert" SELECTED>expert</option>
-      <option value="master">master</option>
-   </select><br>
-	图属性 :<select id="map" name="map" onchange="changemapcolor();">
-		<option value="smile">smile</option>
-		<option value="pure">pure</option>
-		<option value="cool">cool</option>
-	</select><br>
-	总combo数 :<input type="number" id="combo" name="combo" value="300" autocomplete="off" style="width:50px"><br>
-	perfect数:<input type="number" id="perfect" name="perfect" value="285" autocomplete="off" style="width:50px"><br>
-	时间:<input type="number" step="any" id="time" name="time" value="100" autocomplete="off" style="width:50px">秒（从人物出现到最后一个note被击打的时间，不是歌曲长度。部分谱面无长度数据，默认值为110秒）<br>
-	星星perfect数:<input type="number" id="starperfect" name="starperfect" value="47" autocomplete="off" style="width:50px">（只有星星系加分需要填写）<br>
-<br>
-<h3>卡片库</h3>
-筛选：<select id="rarity" name="rarity" onchange="changecardselect()">
-      <option value="">稀有度</option>
-      <option value="N">N</option>
-      <option value="R">R</option>
-      <option value="SR">SR</option>
-      <option value="SSR">SSR</option>
-      <option value="UR">UR</option>
-   </select>
-   <select id="chr" name="chr" onchange="changecardselect()">
-      <option value="">角色</option>
-      <option value="高坂穗乃果">高坂穗乃果</option>
-      <option value="绚濑绘里">绚濑绘里</option>
-      <option value="南小鸟">南小鸟</option>
-      <option value="园田海未">园田海未</option>
-      <option value="星空凛">星空凛</option>
-      <option value="西木野真姬">西木野真姬</option>
-      <option value="东条希">东条希</option>
-      <option value="小泉花阳">小泉花阳</option>
-      <option value="矢泽妮可">矢泽妮可</option>
-      <option value="高海千歌">高海千歌</option>
-      <option value="樱内梨子">樱内梨子</option>
-      <option value="松浦果南">松浦果南</option>
-      <option value="黑泽黛雅">黑泽黛雅</option>
-      <option value="渡边曜">渡边曜</option>
-      <option value="津岛善子">津岛善子</option>
-      <option value="国木田花丸">国木田花丸</option>
-      <option value="小原鞠莉">小原鞠莉</option>
-      <option value="黑泽露比">黑泽露比</option>
-   </select>
-   <select id="unitgrade" name="unitgrade" onchange="changecardselect()">
-      <option value="">年级小队</option>
-      <option value="4">μ's</option>
-      <option value="5">Aqours</option>
-      <option value="1">一年级</option>
-      <option value="2">二年级</option>
-      <option value="3">三年级</option>
-      <option value="6">Printemps</option>
-      <option value="7">lilywhite</option>
-      <option value="8">BiBi</option>
-      <option value="9">CYaRon!</option>
-      <option value="10">AZALEA</option>
-      <option value="11">Guilty Kiss</option>
-   </select>
-   <select id="att" name="att" onchange="changecardselect()">
-      <option value="">属性</option>
-      <option value="smile" style="color:red">smile</option>
-      <option value="pure" style="color:green">pure</option>
-      <option value="cool" style="color:blue">cool</option>
-   </select>
-   <select id="triggertype" name="triggertype" onchange="changecardselect()">
-      <option value="">触发类型</option>
-      <option value="1">时间</option>
-      <option value="3">图标</option>
-      <option value="4">combo</option>
-      <option value="5">分数</option>
-      <option value="6">perfect</option>
-      <option value="12">星星perfect</option>
-   </select>
-   <select id="skilltype" name="skilltype" onchange="changecardselect()">
-      <option value="">技能类型</option>
-      <option value="4">小判定</option>
-      <option value="5">大判定</option>
-      <option value="9">回血</option>
-      <option value="11">加分</option>
-   </select>
-   <select id="cardtype" name="cardtype" onchange="changecardselect()">
-      <option value="">卡片类型</option>
-      <option value="活动卡">活动卡</option>
-      <option value="登录奖励">登录奖励</option>
-   </select>
-   <select id="special" name="special" onchange="changecardselect()">
-      <option value="">是否特典卡</option>
-      <option value=0>不是特典</option>
-      <option value=1>是特典</option>
-   </select>
-   <select id="setname" name="setname" onchange="changecardselect()">
-      <option value="">套卡名</option>
-      <option value="初期">初期</option>
-      <option value="職業編">职业篇</option>
-      <option value="動物編">动物篇</option>
-      <option value="8月編">8月篇</option>
-      <option value="9月編">9月篇</option>
-      <option value="10月編">10月篇</option>
-      <option value="11月編">11月篇</option>
-      <option value="12月編">12月篇</option>
-      <option value="1月編">1月篇</option>
-      <option value="2月編">2月篇</option>
-      <option value="3月編">3月篇</option>
-      <option value="4月編">4月篇</option>
-      <option value="5月編">5月篇</option>
-      <option value="6月編">6月篇</option>
-      <option value="7月編">7月篇</option>
-      <option value="チャイナドレス編">旗袍篇</option>
-      <option value="カフェメイド編">女仆篇</option>
-      <option value="ハロウィン編">万圣篇</option>
-      <option value="星座編">星座篇</option>
-      <option value="雪山編">雪山篇</option>
-      <option value="七福神編">七福神篇</option>
-      <option value="バレンタイン編">情人节篇</option>
-      <option value="ホワイトデー編">白色情人节篇</option>
-      <option value="職業編(Part2">职业篇2</option>
-      <option value="サイバー編">电玩篇</option>
-      <option value="手品師編">魔术师篇</option>
-      <option value="マリン編">海兵篇</option>
-      <option value="プール編">泳池篇</option>
-      <option value="くのいち編">忍者篇</option>
-      <option value="動物編(Part2)">动物篇2</option>
-      <option value="舞踏会編">舞踏会篇</option>
-      <option value="クリスマス編">圣诞篇</option>
-      <option value="サーカス編">马戏团篇</option>
-      <option value="妖精の国編">妖精之国篇</option>
-   </select>
-   <input type="checkbox" id="showncard" name="showncard" onchange="changecardselect()">显示N卡</input>
-   <br>
-卡片：<select id="cardchoice" name="cardchoice" onchange="skilllevel = 0;changeskilllevel();changecolor('cardchoice')">
-		<option value=""> </option>
-	</select>
-	<input type="checkbox" id="mezame" name="mezame" onclick="toMezame()">觉醒</input><input type="button" id="language" name="language" onclick="changeLanguage()" value="切换语言"></input>
-	（特典卡需选择觉醒）<br>
-<div style="float:left">
-	裸smile :<input type="number" id="smile" name="smile" value="0" autocomplete="off" style="color:red"></input><br>
-	裸pure :<input type="number" id="pure" name="pure" value="0" autocomplete="off" style="color:green"><br>
-	裸cool :<input type="number" id="cool" name="cool" value="0" autocomplete="off" style="color:blue"><br>
-	主属性 :<select id="main" name="main">
-		<option value="smile" style="color:red">smile</option>
-		<option value="pure" style="color:green">pure</option>
-		<option value="cool" style="color:blue">cool</option>
-	</select><br>
-	绊:<input type="number" id="kizuna" name="kizuna" value="0" autocomplete="off" ><br>
-   </div>
 
-   <div style="float:left">
-<img id="imageselect">
-</div>
-<div style="clear:both">
-   <!--
-	技能 :<select id="skill" name="skill">
-		<option value=0>无</option>
-		<option value=1>图标系加分</option>
-		<option value=2>perfect系加分</option>
-		<option value=3>分数系加分</option>
-		<option value=4>时间系加分</option>
-		<option value=5>时间系判定</option>
-		<option value=6>图标系判定</option>
-		<option value=7>图标系回血</option>
-		<option value=8>时间系回血</option>
-		<option value=9>perfect系回血</option>
-		<option value=10>星星perfect系加分</option>
-		<option value=11>combo系加分</option>
-		<option value=12>combo系判定</option>
-		<option value=13>combo系回血</option>
-	</select><br><nobr>-->
 
-	<p id="skilltext" style="display:none">
+<div id="main-block">
+    <form action="" id="unitform" name="unitform" method="POST" onsubmit="return check()" enctype=multipart/form-data>
+        <!--<form action="/llloadunit"  onsubmit=""  target="if">-->
+        <div class="form-group clearfix">
+            <div class="col-sm-4 col-sm-push-4 col-md-2 col-md-push-5 ">
+                <input type="button" class="btn btn-danger btn-block" id="clear" onclick="clearall()" value="清空输入" />
+            </div>
+        </div>
 
-   技能等级 : <input type="button" style="height:20px;width:20px;padding:0" value="▲" onclick="lvlup()"></input> Lv<nospan id="skilllevel">1</nospan> <input type="button" style="height:20px;width:20px;padding:0" value="▼" onclick="lvldown()"></input></nobr>
-   </input></nobr><br>
-   技能效果 :每<nobr id="require" name="require"></nobr>
-   <nobr id="requiretext"></nobr>
-   <nobr id="possibility" name="possibility"></nobr>%概率
-   <nobr id="effecttext"></nobr>
-   <nobr id="score" name="score"></nobr>
-   <nobr id="unittext"></nobr>
-   </nobr><br><br>
-	</p>
-<br><br>
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">歌曲信息</h3>
+            </div>
+            <div class="panel-body form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">搜索：</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" type="text" id="songsearch" name="songsearch" value="" onchange="changesongselect()" />
+                    </div>
 
-<h3>队伍属性</h3>
-<div>
-<div style="float:left">
-<table class="calculate-table" border='1'>
-   <tr>
-      <td>权重</td>
-      {% for i in range(0,9) %}
-      <td><input type="number" step="any" id="weight{{i}}" name="weight{{i}}" size=3 autocomplete="off"></td>
-      {% endfor %}
-   </tr>
-   <tr>
-      <td></td>
-      {% for i in range(0,9) %}
-      <td><input type="button" value="放卡{{i+1}}" onclick="copyTo({{i}})"></td>
-      {% endfor %}
-   </tr>
-   <tr>
-      <td>卡片</td>
-   	<td ><img  id='avatar0' src='/static/null.png'/></td>
-   	<td><img  id='avatar1' src='/static/null.png'/></td>
-   	<td><img  id='avatar2' src='/static/null.png'/></td>
-   	<td><img  id='avatar3' src='/static/null.png'/></td>
-   	<td><img  id='avatar4' src='/static/null.png'/></td>
-   	<td><img  id='avatar5' src='/static/null.png'/></td>
-   	<td><img  id='avatar6' src='/static/null.png'/></td>
-   	<td><img  id='avatar7' src='/static/null.png'/></td>
-   	<td><img  id='avatar8' src='/static/null.png'/></td>
-   </tr>
-   <tr style="display:none">
-      <td>id</td>
-      {% for i in range(0,9) %}
-      <td><input type="number" id="cardid{{i}}" name="cardid{{i}}" size=1 value=0 autocomplete="off"></td>
-      {% endfor %}
-   </tr>
-   <tr style="display:none">
-      <td>mezame</td>
-      {% for i in range(0,9) %}
-      <td><input type="number" id="mezame{{i}}" name="mezame{{i}}" size=1 value=0 autocomplete="off"></td>
-      {% endfor %}
-   </tr>
-   <tr>
-      <td>主属性</td>
-      {% for i in range(0,9) %}
-      <td><select id="main{{i}}" name="main{{i}}">
-         <option value="smile" style="color:red">smile</option>
-         <option value="pure" style="color:green">pure</option>
-         <option value="cool" style="color:blue">cool</option>
-      </select></td>
-      {% endfor %}
-   </tr>
-   <tr>
-      <td style="color:red">smile</td>
-      {% for i in range(0,9) %}
-      <td><input type="number" style="color:red" id="smile{{i}}" name="smile{{i}}" size=3 autocomplete="off"></td>
-      {% endfor %}
-   </tr>
-   <tr>
-      <td style="color:green">pure</td>
-      {% for i in range(0,9) %}
-      <td><input type="number" style="color:green" id="pure{{i}}" name="pure{{i}}" size=3 autocomplete="off"></td>
-      {% endfor %}
-   </tr>
-   <tr>
-      <td style="color:blue">cool</td>
-      {% for i in range(0,9) %}
-      <td><input type="number" style="color:blue" id="cool{{i}}" name="cool{{i}}" size=3 autocomplete="off"></td>
-      {% endfor %}
-   </tr>
-   <tr>
-      <td>技能</td>
-      {% for i in range(0,9) %}
-      <td>Lv<input type="text" id="skilllevel{{i}}" name="skilllevel{{i}}" value="1" autocomplete="off" size=1 style="width:20px" onchange="changeunitskilllevel({{i}})"></td>
-      {% endfor %}
-   </tr>
-   <tr>
-      <td>单体数值</td>
-      {% for i in range(0,9) %}
-      <td><select id="gemnum{{i}}" name="gemnum{{i}}" onchange="calslot({{i}})">
-         <option value="0" >0</option>
-         <option value="200" >200</option>
-         <option value="450" >450</option>
-         <option value="650" >650</option>
-      </select></td>
-      {% endfor %}
-   </tr>
-   <tr>
-      <td>单体百分比</td>
-      {% for i in range(0,9) %}
-      <td><select id="gemsinglepercent{{i}}" name="gemsinglepercent{{i}}" onchange="calslot({{i}})">
-         <option value="0" >0</option>
-         <option value="0.1" >10%</option>
-         <option value="0.16" >16%</option>
-         <option value="0.26" >26%</option>
-      </select></td>
-      {% endfor %}
-   </tr>
-   <tr>
-      <td>全体百分比</td>
-      {% for i in range(0,9) %}
-      <td><select id="gemallpercent{{i}}" name="gemallpercent{{i}}" onchange="calslot({{i}})">
-         <option value="0" >0</option>
-         <option value="0.018" >1.8%</option>
-         <option value="0.024" >2.4%</option>
-         <option value="0.042" >4.2%</option>
-      </select></td>
-      {% endfor %}
-   </tr>
-   <tr>
-      <td>奶/分宝石</td>
-      {% for i in range(0,9) %}
-      <td><select id="gemskill{{i}}" name="gemskill{{i}}" onchange="calslot({{i}})">
-         <option value="0" >无</option>
-         <option value="1" >有</option>
-      </select></td>
-      {% endfor %}
-   </tr>
-   <tr style="display:none">
-      <td>判定宝石</td>
-      {% for i in range(0,9) %}
-      <td><select id="gemacc{{i}}" name="gemacc{{i}}" onchange="calslot({{i}})">
-         <option value="0" >无</option>
-         <option value="1" >有</option>
-      </select></td>
-      {% endfor %}
-   </tr>
-   <tr>
-      <td>使用槽数</td>
-      {% for i in range(0,9) %}
-      <td id="slot{{i}}" name="slot{{i}}"></td>
-      {% endfor %}
-   </tr>
-   <tr>
-      <td></td>
-      {% for i in range(0,9) %}
-      <td><input type="button" id="pos{{i}}" name="pos{{i}}" value="换位{{i+1}}" onclick="changepos({{i}})"></td>
-      {% endfor %}
-   </tr>
-   <tr>
-      <td>属性强度</td>
-      {% for i in range(0,9) %}
-      <td id="attstrength{{i}}"></td>
-      {% endfor %}
-   </tr>
-   <tr>
-      <td>技能强度</td>
-      {% for i in range(0,9) %}
-      <td id="skillstrength{{i}}"></td>
-      {% endfor %}
-   </tr>
-   <tr>
-      <td>卡强度</td>
-      {% for i in range(0,9) %}
-      <td id="cardstrength{{i}}"></td>
-      {% endfor %}
-   </tr>
-   <tr>
-      <td>实际强度</td>
-      {% for i in range(0,9) %}
-      <td id="strength{{i}}"></td>
-      {% endfor %}
-   </tr>
-   <!--
-   <tr>
-      <td>判定</td>
-      {% for i in range(0,9) %}
-      <td id="accuracy{{i}}"></td>
-      {% endfor %}
-   </tr>
--->
-   <tr>
-      <td>回复</td>
-      {% for i in range(0,9) %}
-      <td id="heal{{i}}"></td>
-      {% endfor %}
-   </tr>
-</table>
-</div>
-<div class="col-sm-3">
+                </div>
 
-<input type="button" value="保存队伍" onclick="saveunit()">
-<input type="file" name="file"/>
-<input type="submit" value="读取队伍" onclick="loadunit()">
+                <hr />
 
-<div id="unit-storage" style="margin-top: 30px">
-  <h4>队伍列表</h4>
-  <div id="unit-storage-list" class="list-group">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">筛选：</label>
+                    <div class="row-2 col-sm-10">
+                        <div class="col-xs-6">
+                            <select :class="attr" v-model="attr" id="songatt" name="songatt" onchange="changesongselect()" class="form-control">
+                                <option style="color:initial;" value="">属性</option>
+                                <option class="smile" value="smile">Smile</option>
+                                <option class="pure" value="pure">Pure</option>
+                                <option class="cool" value="cool">Cool</option>
+                            </select>
+                        </div>
 
-  </div>
-  <div class="input-group">
-    <input type="text" id="unit-storage-name" class="form-control" placeholder="给队伍取个名字" />
-    <span class="input-group-btn">
-      <a class="btn btn-default" id="unit-storage-save">保存到浏览器</a>
-    </span>
-  </div>
-</div>
+                        <div class="col-xs-6">
+                            <select id="songunit" name="songunit" onchange="changesongselect()" class="form-control">
+                                <option value="">组合</option>
+                                <option value="muse">μ's</option>
+                                <option value="aqours">Aqours</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
-</div>
-</div>
-<div style="clear:both">
-</div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">歌曲：</label>
+                    <div class="row-2 col-sm-10">
+                        <div class="col-xs-8 col-sm-9">
+                            <select id="songchoice" name="songchoice" onchange="changediffinfo();changesongcolor('songchoice')" class="form-control">
+                                <option value=""> </option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-sm-3">
+                            <input type="button" id="language" name="language" onclick="changeLanguage()" value="切换语言" class="btn btn-info btn-block" />
+                        </div>
 
-主唱技能 :<select id="bonus" name="bonus">
-		<option value="smile" style="color:red">smile</option>
-		<option value="pure" style="color:green">pure</option>
-		<option value="cool" style="color:blue">cool</option>
-	</select>增加<select id="base" name="base">
-      <option value="smile" style="color:red">smile</option>
-      <option value="pure" style="color:green">pure</option>
-      <option value="cool" style="color:blue">cool</option>
-   </select>的<select id="percentage" name="percentage">
-      <option value=0>0</option>
-      <option value=3>3</option>
-      <option value=6 SELECTED>6</option>
-      <option value=7>7</option>
-      <option value=9>9</option>
-      <option value=12>12</option>
-   </select>%+
-   <select id="secondlimit" name="secondlimit">
-      <option value=""></option>
-      <option value="4" SELECTED>μ's</option>
-      <option value="5">Aqours</option>
-      <option value="1">一年级</option>
-      <option value="2">二年级</option>
-      <option value="3">三年级</option>
-      <option value="6">Printemps</option>
-      <option value="7">lilywhite</option>
-      <option value="8">BiBi</option>
-      <option value="9">CYaRon!</option>
-      <option value="10">AZALEA</option>
-      <option value="11">Guilty Kiss</option>
-   </select>的<nospan id="secondbase" name="secondbase">
-   歌曲属性
-   <!--
-      <option value="smile" style="color:red">smile</option>
-      <option value="pure" style="color:green">pure</option>
-      <option value="cool" style="color:blue">cool</option>-->
-   </nospan>增加<select id="secondpercentage" name="secondpercentage">
-      <option value=0 SELECTED>0</option>
-      <option value=1>1</option>
-      <option value=2>2</option>
-      <option value=3>3</option>
-      <option value=6>6</option>
-   </select>%<br>
-好友主唱技能 :<select id="bonus2" name="bonus2">
-		<option value="smile" style="color:red">smile</option>
-      <option value="pure" style="color:green">pure</option>
-      <option value="cool" style="color:blue">cool</option>
-	</select>增加<select id="base2" name="base2">
-      <option value="smile" style="color:red">smile</option>
-      <option value="pure" style="color:green">pure</option>
-      <option value="cool" style="color:blue">cool</option>
-   </select>的<select id="percentage2" name="percentage2">
-      <option value=0 SELECTED>0</option>
-      <option value=3>3</option>
-      <option value=6>6</option>
-      <option value=7>7</option>
-      <option value=9>9</option>
-      <option value=12>12</option>
-   </select>%+
-   <select id="secondlimit2" name="secondlimit2">
-      <option value=""></option>
-      <option value="4" SELECTED>μ's</option>
-      <option value="5">Aqours</option>
-      <option value="1">一年级</option>
-      <option value="2">二年级</option>
-      <option value="3">三年级</option>
-      <option value="6">Printemps</option>
-      <option value="7">lilywhite</option>
-      <option value="8">BiBi</option>
-      <option value="9">CYaRon!</option>
-      <option value="10">AZALEA</option>
-      <option value="11">Guilty Kiss</option>
-   </select>的<nospan id="secondbase2" name="secondbase2">
-   歌曲属性
-   <!--
-      <option value="smile" style="color:red">smile</option>
-      <option value="pure" style="color:green">pure</option>
-      <option value="cool" style="color:blue">cool</option>-->
-   </nospan>增加<select id="secondpercentage2" name="secondpercentage2">
-      <option value=0 SELECTED>0</option>
-      <option value=1>1</option>
-      <option value=2>2</option>
-      <option value=3>3</option>
-      <option value=6>6</option>
-   </select>%<br>
-点击得分增加：<input type="number" step="any" id="tapup" name="tapup" value="0" size=2 />%<br>
-技能发动率增加：<input type="number" step="any" id="skillup" name="skillup" value="0" size=2 />%<br>
-<input type="button" value="calculate" onclick="check()"> <input type="checkbox" id="distribution" name="distribution">计算分布</input><!--<input type="checkbox" id="naipan" name="naipan" onchange="changenaipan()">弱奶判宝石</input>-->
-   <br><br><br>
+                    </div>
+
+                </div>
+
+                <div class="form-group ">
+
+                    <div class="row-1 col-xs-6 col-md-4">
+                        <label class="col-sm-5 control-label">难度：</label>
+                        <div class="col-sm-7 ">
+                            <select id="diffchoice" name="diffchoice" onchange="changesongcolor('songchoice')" class="form-control">
+                                <option value="easy">Easy</option>
+                                <option value="normal">Normal</option>
+                                <option value="hard">Hard</option>
+                                <option value="expert" SELECTED>Expert</option>
+                                <option value="master">Master</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row-1 col-xs-6 col-md-4">
+                        <label class="col-sm-5 control-label">谱面属性 :</label>
+                        <div class="col-sm-7 ">
+                            <select :class="attr" v-model="attr" id="map" name="map" onchange="changemapcolor();" class="form-control">
+                                <option class="smile" value="smile">Smile</option>
+                                <option class="pure" value="pure">Pure</option>
+                                <option class="cool" value="cool">Cool</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row-1 col-xs-6 col-md-4">
+                        <label class="col-sm-5 control-label">combo数 :</label>
+                        <div class="col-sm-7 ">
+                            <input type="number" id="combo" name="combo" value="300" autocomplete="off" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="row-1 col-xs-6 col-md-4">
+                        <label class="col-sm-5 control-label">perfect数 :</label>
+                        <div class="col-sm-7 ">
+                            <input type="number" id="perfect" name="perfect" value="285" autocomplete="off" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="row-1 col-xs-6 col-md-4">
+                        <label class="col-sm-5 control-label">时间 :</label>
+                        <div class="col-xs-10 col-sm-6 input-group" >
+                            <input type="number" step="any" id="time" name="time" value="100" autocomplete="off" class="form-control " />
+                            <span class="input-group-addon">秒&nbsp;<span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" title="从人物出现到最后一个note被击打的时间，不是歌曲长度。部分谱面无长度数据，默认值为110秒"></span></span>
+
+                        </div>
+                    </div>
+
+                    <div class="row-1 col-xs-6 col-md-4">
+                        <label class="col-sm-5 control-label">星星perfect数 :</label>
+                        <div class="col-xs-10 col-sm-6 input-group" >
+                            <input type="number" id="starperfect" name="starperfect" value="47" autocomplete="off" class="form-control " />
+                            <span class="input-group-addon glyphicon glyphicon-question-sign" data-toggle="tooltip" title="只有星星系加分需要填写"></span>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">卡片库</h3>
+            </div>
+            <div class="panel-body form-horizontal">
+                
+                <div class="form-group">
+                    <label class="col-sm-12">筛选：</label>
+                    <div class="col-xs-12">
+                        
+                        <div class="col-xs-6 col-sm-4 col-md-3 space">
+                            <select id="rarity" name="rarity" onchange="changecardselect()" class="form-control">
+                                <option value="">稀有度</option>
+                                <option value="N">N</option>
+                                <option value="R">R</option>
+                                <option value="SR">SR</option>
+                                <option value="SSR">SSR</option>
+                                <option value="UR">UR</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-3 space">
+                            <select id="chr" name="chr" onchange="changecardselect()" class="form-control">
+                                <option value="">角色</option>
+                                <option value="高坂穗乃果">高坂穗乃果</option>
+                                <option value="绚濑绘里">绚濑绘里</option>
+                                <option value="南小鸟">南小鸟</option>
+                                <option value="园田海未">园田海未</option>
+                                <option value="星空凛">星空凛</option>
+                                <option value="西木野真姬">西木野真姬</option>
+                                <option value="东条希">东条希</option>
+                                <option value="小泉花阳">小泉花阳</option>
+                                <option value="矢泽妮可">矢泽妮可</option>
+                                <option value="高海千歌">高海千歌</option>
+                                <option value="樱内梨子">樱内梨子</option>
+                                <option value="松浦果南">松浦果南</option>
+                                <option value="黑泽黛雅">黑泽黛雅</option>
+                                <option value="渡边曜">渡边曜</option>
+                                <option value="津岛善子">津岛善子</option>
+                                <option value="国木田花丸">国木田花丸</option>
+                                <option value="小原鞠莉">小原鞠莉</option>
+                                <option value="黑泽露比">黑泽露比</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-3 space">
+                            <select id="unitgrade" name="unitgrade" onchange="changecardselect()" class="form-control">
+                                <option value="">年级小队</option>
+                                <option value="4">μ's</option>
+                                <option value="5">Aqours</option>
+                                <option value="1">一年级</option>
+                                <option value="2">二年级</option>
+                                <option value="3">三年级</option>
+                                <option value="6">Printemps</option>
+                                <option value="7">lilywhite</option>
+                                <option value="8">BiBi</option>
+                                <option value="9">CYaRon!</option>
+                                <option value="10">AZALEA</option>
+                                <option value="11">Guilty Kiss</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-3 space">
+                            <select id="att" name="att" onchange="changecardselect()" class="form-control">
+                                <option value="">属性</option>
+                                <option value="smile" class="smile">smile</option>
+                                <option value="pure" class="pure">pure</option>
+                                <option value="cool" class="cool">cool</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-3 space">
+                            <select id="triggertype" name="triggertype" onchange="changecardselect()" class="form-control">
+                                <option value="">触发类型</option>
+                                <option value="1">时间</option>
+                                <option value="3">图标</option>
+                                <option value="4">combo</option>
+                                <option value="5">分数</option>
+                                <option value="6">perfect</option>
+                                <option value="12">星星perfect</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-3 space">
+                            <select id="skilltype" name="skilltype" onchange="changecardselect()" class="form-control">
+                                <option value="">技能类型</option>
+                                <option value="4">小判定</option>
+                                <option value="5">大判定</option>
+                                <option value="9">回血</option>
+                                <option value="11">加分</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-3 space">
+                            <select id="cardtype" name="cardtype" onchange="changecardselect()" class="form-control">
+                                <option value="">卡片类型</option>
+                                <option value="活动卡">活动卡</option>
+                                <option value="登录奖励">登录奖励</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-3 space">
+                            <select id="special" name="special" onchange="changecardselect()" class="form-control">
+                                <option value="">是否特典卡</option>
+                                <option value=0>不是特典</option>
+                                <option value=1>是特典</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-6 col-sm-4 col-md-3 space">
+                            <select id="setname" name="setname" onchange="changecardselect()" class="form-control">
+                                <option value="">套卡名</option>
+                                <option value="初期">初期</option>
+                                <option value="職業編">职业篇</option>
+                                <option value="動物編">动物篇</option>
+                                <option value="8月編">8月篇</option>
+                                <option value="9月編">9月篇</option>
+                                <option value="10月編">10月篇</option>
+                                <option value="11月編">11月篇</option>
+                                <option value="12月編">12月篇</option>
+                                <option value="1月編">1月篇</option>
+                                <option value="2月編">2月篇</option>
+                                <option value="3月編">3月篇</option>
+                                <option value="4月編">4月篇</option>
+                                <option value="5月編">5月篇</option>
+                                <option value="6月編">6月篇</option>
+                                <option value="7月編">7月篇</option>
+                                <option value="チャイナドレス編">旗袍篇</option>
+                                <option value="カフェメイド編">女仆篇</option>
+                                <option value="ハロウィン編">万圣篇</option>
+                                <option value="星座編">星座篇</option>
+                                <option value="雪山編">雪山篇</option>
+                                <option value="七福神編">七福神篇</option>
+                                <option value="バレンタイン編">情人节篇</option>
+                                <option value="ホワイトデー編">白色情人节篇</option>
+                                <option value="職業編(Part2">职业篇2</option>
+                                <option value="サイバー編">电玩篇</option>
+                                <option value="手品師編">魔术师篇</option>
+                                <option value="マリン編">海兵篇</option>
+                                <option value="プール編">泳池篇</option>
+                                <option value="くのいち編">忍者篇</option>
+                                <option value="動物編(Part2)">动物篇2</option>
+                                <option value="舞踏会編">舞踏会篇</option>
+                                <option value="クリスマス編">圣诞篇</option>
+                                <option value="サーカス編">马戏团篇</option>
+                                <option value="妖精の国編">妖精之国篇</option>
+                            </select>
+                        </div>
+                         
+                        <div class="checkbox checkbox-large col-xs-6 col-sm-4 col-md-3 space">
+                            <label>
+                                <input type="checkbox" id="showncard" name="showncard" onchange="changecardselect()" />
+                                显示N卡
+                            </label>
+                        </div>
+                       
+
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <h4 style="clear:both">===修改分界线===</h4>
+        <!--========================-->
+
+        
+        
+                <br>
+        卡片：<select id="cardchoice" name="cardchoice" onchange="skilllevel = 0;changeskilllevel();changecolor('cardchoice')">
+            <option value=""> </option>
+        </select>
+        <input type="checkbox" id="mezame" name="mezame" onclick="toMezame()">觉醒</input><input type="button" id="language" name="language" onclick="changeLanguage()" value="切换语言"></input>
+        （特典卡需选择觉醒）<br>
+        <div style="float:left">
+            裸smile :<input type="number" id="smile" name="smile" value="0" autocomplete="off" class="smile"></input><br>
+            裸pure :<input type="number" id="pure" name="pure" value="0" autocomplete="off" class="pure"><br>
+            裸cool :<input type="number" id="cool" name="cool" value="0" autocomplete="off" class="cool"><br>
+            主属性 :<select id="main" name="main">
+                <option value="smile" class="smile">smile</option>
+                <option value="pure" class="pure">pure</option>
+                <option value="cool" class="cool">cool</option>
+            </select><br>
+            绊:<input type="number" id="kizuna" name="kizuna" value="0" autocomplete="off"><br>
+        </div>
+
+        <div style="float:left">
+            <img id="imageselect">
+        </div>
+        <div style="clear:both">
+            <!--
+        技能 :<select id="skill" name="skill">
+            <option value=0>无</option>
+            <option value=1>图标系加分</option>
+            <option value=2>perfect系加分</option>
+            <option value=3>分数系加分</option>
+            <option value=4>时间系加分</option>
+            <option value=5>时间系判定</option>
+            <option value=6>图标系判定</option>
+            <option value=7>图标系回血</option>
+            <option value=8>时间系回血</option>
+            <option value=9>perfect系回血</option>
+            <option value=10>星星perfect系加分</option>
+            <option value=11>combo系加分</option>
+            <option value=12>combo系判定</option>
+            <option value=13>combo系回血</option>
+        </select>-->
+            <br><nobr>
+
+                <p id="skilltext" style="display:none">
+
+                    技能等级 : <input type="button" style="height:20px;width:20px;padding:0" value="▲" onclick="lvlup()" /> Lv<nospan id="skilllevel">1</nospan> <input type="button" style="height:20px;width:20px;padding:0" value="▼" onclick="lvldown()" />
+            </nobr>
+            <br>
+            技能效果 :每<nobr id="require" name="require"></nobr>
+            <nobr id="requiretext"></nobr>
+            <nobr id="possibility" name="possibility"></nobr>%概率
+            <nobr id="effecttext"></nobr>
+            <nobr id="score" name="score"></nobr>
+            <nobr id="unittext"></nobr>
+            <br><br>
+            </p>
+            <br><br>
+
+            <h3>队伍属性</h3>
+            <div>
+                <div style="float:left">
+                    <table class="calculate-table" border='1'>
+                        <tr>
+                            <td>权重</td>
+                            {% for i in range(0,9) %}
+                            <td><input type="number" step="any" id="weight{{i}}" name="weight{{i}}" size=3 autocomplete="off"></td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td></td>
+                            {% for i in range(0,9) %}
+                            <td><input type="button" value="放卡{{i+1}}" onclick="copyTo({{i}})"></td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>卡片</td>
+                            <td><img id='avatar0' src='/static/null.png' /></td>
+                            <td><img id='avatar1' src='/static/null.png' /></td>
+                            <td><img id='avatar2' src='/static/null.png' /></td>
+                            <td><img id='avatar3' src='/static/null.png' /></td>
+                            <td><img id='avatar4' src='/static/null.png' /></td>
+                            <td><img id='avatar5' src='/static/null.png' /></td>
+                            <td><img id='avatar6' src='/static/null.png' /></td>
+                            <td><img id='avatar7' src='/static/null.png' /></td>
+                            <td><img id='avatar8' src='/static/null.png' /></td>
+                        </tr>
+                        <tr style="display:none">
+                            <td>id</td>
+                            {% for i in range(0,9) %}
+                            <td><input type="number" id="cardid{{i}}" name="cardid{{i}}" size=1 value=0 autocomplete="off"></td>
+                            {% endfor %}
+                        </tr>
+                        <tr style="display:none">
+                            <td>mezame</td>
+                            {% for i in range(0,9) %}
+                            <td><input type="number" id="mezame{{i}}" name="mezame{{i}}" size=1 value=0 autocomplete="off"></td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>主属性</td>
+                            {% for i in range(0,9) %}
+                            <td>
+                                <select id="main{{i}}" name="main{{i}}">
+                                    <option value="smile" class="smile">smile</option>
+                                    <option value="pure" class="pure">pure</option>
+                                    <option value="cool" class="cool">cool</option>
+                                </select>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td class="smile">smile</td>
+                            {% for i in range(0,9) %}
+                            <td><input type="number" class="smile" id="smile{{i}}" name="smile{{i}}" size=3 autocomplete="off"></td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td class="pure">pure</td>
+                            {% for i in range(0,9) %}
+                            <td><input type="number" class="pure" id="pure{{i}}" name="pure{{i}}" size=3 autocomplete="off"></td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td class="cool">cool</td>
+                            {% for i in range(0,9) %}
+                            <td><input type="number" class="cool" id="cool{{i}}" name="cool{{i}}" size=3 autocomplete="off"></td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>技能</td>
+                            {% for i in range(0,9) %}
+                            <td>Lv<input type="text" id="skilllevel{{i}}" name="skilllevel{{i}}" value="1" autocomplete="off" size=1 style="width:20px" onchange="changeunitskilllevel({{i}})"></td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>单体数值</td>
+                            {% for i in range(0,9) %}
+                            <td>
+                                <select id="gemnum{{i}}" name="gemnum{{i}}" onchange="calslot({{i}})">
+                                    <option value="0">0</option>
+                                    <option value="200">200</option>
+                                    <option value="450">450</option>
+                                    <option value="650">650</option>
+                                </select>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>单体百分比</td>
+                            {% for i in range(0,9) %}
+                            <td>
+                                <select id="gemsinglepercent{{i}}" name="gemsinglepercent{{i}}" onchange="calslot({{i}})">
+                                    <option value="0">0</option>
+                                    <option value="0.1">10%</option>
+                                    <option value="0.16">16%</option>
+                                    <option value="0.26">26%</option>
+                                </select>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>全体百分比</td>
+                            {% for i in range(0,9) %}
+                            <td>
+                                <select id="gemallpercent{{i}}" name="gemallpercent{{i}}" onchange="calslot({{i}})">
+                                    <option value="0">0</option>
+                                    <option value="0.018">1.8%</option>
+                                    <option value="0.024">2.4%</option>
+                                    <option value="0.042">4.2%</option>
+                                </select>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>奶/分宝石</td>
+                            {% for i in range(0,9) %}
+                            <td>
+                                <select id="gemskill{{i}}" name="gemskill{{i}}" onchange="calslot({{i}})">
+                                    <option value="0">无</option>
+                                    <option value="1">有</option>
+                                </select>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        <tr style="display:none">
+                            <td>判定宝石</td>
+                            {% for i in range(0,9) %}
+                            <td>
+                                <select id="gemacc{{i}}" name="gemacc{{i}}" onchange="calslot({{i}})">
+                                    <option value="0">无</option>
+                                    <option value="1">有</option>
+                                </select>
+                            </td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>使用槽数</td>
+                            {% for i in range(0,9) %}
+                            <td id="slot{{i}}" name="slot{{i}}"></td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td></td>
+                            {% for i in range(0,9) %}
+                            <td><input type="button" id="pos{{i}}" name="pos{{i}}" value="换位{{i+1}}" onclick="changepos({{i}})"></td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>属性强度</td>
+                            {% for i in range(0,9) %}
+                            <td id="attstrength{{i}}"></td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>技能强度</td>
+                            {% for i in range(0,9) %}
+                            <td id="skillstrength{{i}}"></td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>卡强度</td>
+                            {% for i in range(0,9) %}
+                            <td id="cardstrength{{i}}"></td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>实际强度</td>
+                            {% for i in range(0,9) %}
+                            <td id="strength{{i}}"></td>
+                            {% endfor %}
+                        </tr>
+                        <!--
+                       <tr>
+                          <td>判定</td>
+                          {% for i in range(0,9) %}
+                          <td id="accuracy{{i}}"></td>
+                          {% endfor %}
+                       </tr>
+                    -->
+                        <tr>
+                            <td>回复</td>
+                            {% for i in range(0,9) %}
+                            <td id="heal{{i}}"></td>
+                            {% endfor %}
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-sm-3">
+
+                    <input type="button" value="保存队伍" onclick="saveunit()">
+                    <input type="file" name="file" />
+                    <input type="submit" value="读取队伍" onclick="loadunit()">
+
+                    <div id="unit-storage" style="margin-top: 30px">
+                        <h4>队伍列表</h4>
+                        <div id="unit-storage-list" class="list-group">
+
+                        </div>
+                        <div class="input-group">
+                            <input type="text" id="unit-storage-name" class="form-control" placeholder="给队伍取个名字" />
+                            <span class="input-group-btn">
+                                <a class="btn btn-default" id="unit-storage-save">保存到浏览器</a>
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div style="clear:both">
+            </div>
+
+            主唱技能 :<select id="bonus" name="bonus">
+                <option value="smile" class="smile">smile</option>
+                <option value="pure" class="pure">pure</option>
+                <option value="cool" class="cool">cool</option>
+            </select>增加<select id="base" name="base">
+                <option value="smile" class="smile">smile</option>
+                <option value="pure" class="pure">pure</option>
+                <option value="cool" class="cool">cool</option>
+            </select>的<select id="percentage" name="percentage">
+                <option value=0>0</option>
+                <option value=3>3</option>
+                <option value=6 SELECTED>6</option>
+                <option value=7>7</option>
+                <option value=9>9</option>
+                <option value=12>12</option>
+            </select>%+
+            <select id="secondlimit" name="secondlimit">
+                <option value=""></option>
+                <option value="4" SELECTED>μ's</option>
+                <option value="5">Aqours</option>
+                <option value="1">一年级</option>
+                <option value="2">二年级</option>
+                <option value="3">三年级</option>
+                <option value="6">Printemps</option>
+                <option value="7">lilywhite</option>
+                <option value="8">BiBi</option>
+                <option value="9">CYaRon!</option>
+                <option value="10">AZALEA</option>
+                <option value="11">Guilty Kiss</option>
+            </select>的<nospan id="secondbase" name="secondbase">
+                {% raw %}
+                <span :class="attr">{{attr==""?"歌曲属性":attr}}</span>
+                {% endraw %}
+                <!--
+            <option value="smile" class="smile">smile</option>
+            <option value="pure" class="pure">pure</option>
+            <option value="cool" class="cool">cool</option>-->
+            </nospan>增加<select id="secondpercentage" name="secondpercentage">
+                <option value=0 SELECTED>0</option>
+                <option value=1>1</option>
+                <option value=2>2</option>
+                <option value=3>3</option>
+                <option value=6>6</option>
+            </select>%<br>
+            好友主唱技能 :<select id="bonus2" name="bonus2">
+                <option value="smile" class="smile">smile</option>
+                <option value="pure" class="pure">pure</option>
+                <option value="cool" class="cool">cool</option>
+            </select>增加<select id="base2" name="base2">
+                <option value="smile" class="smile">smile</option>
+                <option value="pure" class="pure">pure</option>
+                <option value="cool" class="cool">cool</option>
+            </select>的<select id="percentage2" name="percentage2">
+                <option value=0 SELECTED>0</option>
+                <option value=3>3</option>
+                <option value=6>6</option>
+                <option value=7>7</option>
+                <option value=9>9</option>
+                <option value=12>12</option>
+            </select>%+
+            <select id="secondlimit2" name="secondlimit2">
+                <option value=""></option>
+                <option value="4" SELECTED>μ's</option>
+                <option value="5">Aqours</option>
+                <option value="1">一年级</option>
+                <option value="2">二年级</option>
+                <option value="3">三年级</option>
+                <option value="6">Printemps</option>
+                <option value="7">lilywhite</option>
+                <option value="8">BiBi</option>
+                <option value="9">CYaRon!</option>
+                <option value="10">AZALEA</option>
+                <option value="11">Guilty Kiss</option>
+            </select>的<nospan id="secondbase2" name="secondbase2">
+                {% raw %}
+                <span :class="attr">{{attr==""?"歌曲属性":attr}}</span>
+                {% endraw %}
+                <!--
+            <option value="smile" class="smile">smile</option>
+            <option value="pure" class="pure">pure</option>
+            <option value="cool" class="cool">cool</option>-->
+            </nospan>增加<select id="secondpercentage2" name="secondpercentage2">
+                <option value=0 SELECTED>0</option>
+                <option value=1>1</option>
+                <option value=2>2</option>
+                <option value=3>3</option>
+                <option value=6>6</option>
+            </select>%<br>
+            点击得分增加：<input type="number" step="any" id="tapup" name="tapup" value="0" size=2 />%<br>
+            技能发动率增加：<input type="number" step="any" id="skillup" name="skillup" value="0" size=2 />%<br>
+            <input type="button" value="calculate" onclick="check()"> <input type="checkbox" id="distribution" name="distribution">计算分布</input><!--<input type="checkbox" id="naipan" name="naipan" onchange="changenaipan()">弱奶判宝石</input>-->
+            <br><br><br>
+
 </form>
+    <script>
+        var vm = new Vue({
+            el: "#unitform",
+            data: {
+                attr: ""
+            }
+        });
+    </script>
+
+</div>
 
 <iframe style="display:none" id='if' name='if' src='about:blank' frameborder='0' allowtransparency="yes"></iframe>
 

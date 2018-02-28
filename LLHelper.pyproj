@@ -87,6 +87,7 @@
     <Content Include="static\js\highcharts\highstock.js" />
     <Content Include="static\js\highcharts\jquery-1.8.3.min.js" />
     <Content Include="static\llcardapi.js" />
+    <Content Include="static\llh.css" />
     <Content Include="static\llnewunit\storage.js" />
     <Content Include="static\llsong.js" />
     <Content Include="static\llsongapi.js" />

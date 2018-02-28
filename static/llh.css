@@ -1,0 +1,45 @@
+
+
+/* **以下样式添加 by 电獭*/
+.row-2 {
+    margin-right: -13px;
+    margin-left: -13px;
+}
+
+/*.row-1的目的是做到和.row的缩进一样，
+    但是不会被bootstrap的其它class影响
+*/
+.row-1 {
+    margin-right: 0px;
+    margin-left: 0px;
+    margin-bottom: 15px;
+}
+
+@media only screen and (max-width : 767px) {
+    .row-1  {
+        margin-right: -15px;
+        margin-left: -15px;
+    }
+}
+
+.checkbox.checkbox-large input[type=checkbox],
+.radio.radio-large input[type=radio]{
+    height: 24px;
+    width: 24px;
+    margin-left: -30px;
+}
+
+.checkbox.checkbox-large label,
+.radio.radio-large label{
+    padding-left: 30px;
+    line-height: 2.5
+}
+
+.space {
+    margin-bottom: 15px;
+}
+
+.smile { color: red !important; }
+.cool { color: blue !important; }
+.pure { color: green !important; }
+/* **=============*/
